@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<qualifiedTypeNameHistroy>
+<fullyQualifiedTypeName name="java.io.File"/>
+<fullyQualifiedTypeName name="java.util.Scanner"/>
+<fullyQualifiedTypeName name="java.io.FileWriter"/>
+<fullyQualifiedTypeName name="java.io.FileReader"/>
+<fullyQualifiedTypeName name="java.io.BufferedReader"/>
+<fullyQualifiedTypeName name="java.util.HashMap"/>
+<fullyQualifiedTypeName name="tvg.clustering.ClusterPair"/>
+<fullyQualifiedTypeName name="java.util.PriorityQueue"/>
+<fullyQualifiedTypeName name="tvg.clustering.ClusterPairComparator"/>
+<fullyQualifiedTypeName name="tvg.TimeIntervalVertex"/>
+<fullyQualifiedTypeName name="org.jgrapht.graph.DefaultWeightedEdge"/>
+</qualifiedTypeNameHistroy>

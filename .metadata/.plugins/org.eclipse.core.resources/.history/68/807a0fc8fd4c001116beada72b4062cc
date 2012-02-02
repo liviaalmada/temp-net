@@ -1,0 +1,109 @@
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Scanner;
+
+import org.jgrapht.graph.ClassBasedEdgeFactory;
+import org.jgrapht.graph.DefaultWeightedEdge;
+
+import tvg.DirectedTVG;
+import tvg.TimeIntervalVertex;
+import tvg.clustering.Cluster;
+import tvg.clustering.FirstClusteringAlgorithm;
+
+
+public class FirstTest {
+	static String separator = " ";
+	public static void main(String[] args) {
+		
+		DirectedTVG<DefaultWeightedEdge> g = new DirectedTVG<DefaultWeightedEdge>(
+				new ClassBasedEdgeFactory<TimeIntervalVertex, DefaultWeightedEdge>(DefaultWeightedEdge.class));
+		
+		File file = new File("grafo-exemplo.txt"); 
+		try {
+			FileReader fReader = new FileReader(file);
+			BufferedReader bReader = new BufferedReader(fReader);  
+			
+			String line = null;  
+			line = bReader.readLine();
+			int numVert = Integer.valueOf(line);
+			
+			System.out.println(numVert);
+			HashMap<Integer, TimeIntervalVertex> map = new HashMap<Integer, TimeIntervalVertex>(numVert);
+
+			// read vertex
+			String[] vertex;
+			double initTime;
+			double finTime;
+			int id;
+			TimeIntervalVertex v;
+			while(numVert>0){
+				line = bReader.readLine();
+				vertex = line.split(separator);
+				initTime = Double.valueOf(vertex[0]);
+				finTime = Double.valueOf(vertex[1]);
+				id = Integer.valueOf(vertex[2]);
+				v = new TimeIntervalVertex(initTime, finTime, id);
+				g.addVertex(v);
+				map.put(id, v);
+				numVert--;
+			}
+			
+			// read edge
+			String[] edge;
+			TimeIntervalVertex u;
+			while((line = bReader.readLine()) != null) {  
+			     edge = line.split(separator);
+			     v = map.get(Integer.valueOf(edge[0]));
+			     u = map.get(Integer.valueOf(edge[1]));
+			     System.out.println(v+" "+u);
+			} 
+			
+			
+			
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}  
+		
+		
+		
+		
+		
+		
+//		g.addVertex(u);
+//		g.addVertex(v);
+//		g.addEdge(u, v);
+//		DefaultWeightedEdge e = g.getEdge(u, v);
+//		g.setEdgeWeight(e, 3);
+//		System.out.println(g.getEdgeWeight(e));
+//		
+//		FirstClusteringAlgorithm cl = new FirstClusteringAlgorithm();
+//		
+//		HashSet<TimeIntervalVertex> a1 = new HashSet<TimeIntervalVertex>();
+//		a1.add(u);
+//		Cluster<TimeIntervalVertex, DefaultWeightedEdge> c1 = new Cluster<TimeIntervalVertex, DefaultWeightedEdge>(g,a1,u.getId());
+//		
+//		HashSet<TimeIntervalVertex> a2 = new HashSet<TimeIntervalVertex>();
+//		a2.add(v);
+//		Cluster<TimeIntervalVertex, DefaultWeightedEdge> c2 = new Cluster<TimeIntervalVertex, DefaultWeightedEdge>(g,a2,v.getId());
+//		
+//		g.addEdge(u, v);
+//		try {
+//			cl.execute(g);
+//		} catch (Exception e1) {
+//			// TODO Auto-generated catch block
+//			e1.printStackTrace();
+//		}
+		//System.out.println(cl.similarity(c1, c2));
+	}
+
+}

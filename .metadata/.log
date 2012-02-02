@@ -1,0 +1,10 @@
+!SESSION 2012-02-01 09:48:07.704 -----------------------------------------------
+eclipse.buildId=M20110909-1335
+java.version=1.6.0_22
+java.vendor=Sun Microsystems Inc.
+BootLoader constants: OS=linux, ARCH=x86_64, WS=gtk, NL=pt_BR
+Framework arguments:  -product org.eclipse.epp.package.java.product
+Command-line arguments:  -data /home/livia/Workspace-Mestrado/temp-net -os linux -ws gtk -arch x86_64 -product org.eclipse.epp.package.java.product
+
+!ENTRY org.eclipse.core.resources 4 374 2012-02-01 09:49:22.811
+!MESSAGE Resource '/.org.eclipse.jdt.core.external.folders' already exists.
