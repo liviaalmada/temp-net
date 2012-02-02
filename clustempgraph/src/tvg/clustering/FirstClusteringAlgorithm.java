@@ -12,16 +12,16 @@ import org.jgrapht.graph.DefaultWeightedEdge;
 import tvg.DirectedTVG;
 import tvg.TimeIntervalVertex;
 public class FirstClusteringAlgorithm implements ClusteringTVG<DefaultWeightedEdge>{
-	private DirectedTVG<DefaultWeightedEdge> graph;
-	private double similarity;
-	private int cutSize;
+//	private DirectedTVG<DefaultWeightedEdge> graph;
+//	private double similarity;
+//	private int cutSize;
 	
 	
 	
 	@Override
 	public AbstractCollection<Cluster<TimeIntervalVertex, DefaultWeightedEdge>> execute(DirectedTVG<DefaultWeightedEdge> g) throws Exception {
 
-		graph = g; 
+		//graph = g; 
 		int size = g.vertexSet().size();
 				
 		ArrayList<Cluster<TimeIntervalVertex, DefaultWeightedEdge>> clustering = new ArrayList<Cluster<TimeIntervalVertex,DefaultWeightedEdge>>();
@@ -40,15 +40,28 @@ public class FirstClusteringAlgorithm implements ClusteringTVG<DefaultWeightedEd
 				if(pair.getSimilarity()>0)pairs.add(pair);
 			}
 		}
-		for (ClusterPair clusterPair : pairs) {
-			System.out.println(clusterPair.getC1().getId()+" "+clusterPair.getC2().getId());	
-		}
 		
+		//System.out.println("topo: "+pairs.peek().getC1().getId()+ " " + pairs.peek().getC2().getId());
+		/*for (ClusterPair clusterPair : pairs) {
+			//System.out.println(clusterPair.getC1().getId()+" "+clusterPair.getC2().getId());	
+		}*/
 		
-		while(pairs.size()>0){
+		size = pairs.size();
+		while(size>0){
 			ClusterPair moreSimilar = pairs.remove();
-			clustering.add(moreSimilar.merge(pairs));
+			pairs = moreSimilar.merge(pairs, clustering);
+			size = pairs.size();
+			for (Cluster<TimeIntervalVertex, DefaultWeightedEdge> cl : clustering) {
+				System.out.println("Cluster "+cl.getId());
+				System.out.print("Vertices:");
+				for (TimeIntervalVertex v : cl.vertexSet()) {
+					System.out.print(v.getId()+" ");
+				}
+				System.out.println();
+			}
 		}
+		
+		
 		return clustering;
 	}
 
@@ -81,37 +94,6 @@ public class FirstClusteringAlgorithm implements ClusteringTVG<DefaultWeightedEd
 	}*/
 	
 	
-	public static void main(String[] args) {
-		DirectedTVG<DefaultWeightedEdge> g = new DirectedTVG<DefaultWeightedEdge>(
-				new ClassBasedEdgeFactory<TimeIntervalVertex, DefaultWeightedEdge>(DefaultWeightedEdge.class));
-		TimeIntervalVertex u = new TimeIntervalVertex(0, 3, 0);
-		TimeIntervalVertex v = new TimeIntervalVertex(0, 6, 1);
-		g.addVertex(u);
-		g.addVertex(v);
-		g.addEdge(u, v);
-		DefaultWeightedEdge e = g.getEdge(u, v);
-		g.setEdgeWeight(e, 3);
-		System.out.println(g.getEdgeWeight(e));
-		
-		FirstClusteringAlgorithm cl = new FirstClusteringAlgorithm();
-		
-		HashSet<TimeIntervalVertex> a1 = new HashSet<TimeIntervalVertex>();
-		a1.add(u);
-		Cluster<TimeIntervalVertex, DefaultWeightedEdge> c1 = new Cluster<TimeIntervalVertex, DefaultWeightedEdge>(g,a1,u.getId());
-		
-		HashSet<TimeIntervalVertex> a2 = new HashSet<TimeIntervalVertex>();
-		a2.add(v);
-		Cluster<TimeIntervalVertex, DefaultWeightedEdge> c2 = new Cluster<TimeIntervalVertex, DefaultWeightedEdge>(g,a2,v.getId());
-		
-		g.addEdge(u, v);
-		try {
-			cl.execute(g);
-		} catch (Exception e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-		//System.out.println(cl.similarity(c1, c2));
-	}
-
+	
 		
 }

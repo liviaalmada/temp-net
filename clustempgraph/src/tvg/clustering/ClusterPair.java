@@ -1,7 +1,9 @@
 package tvg.clustering;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map.Entry;
 import java.util.PriorityQueue;
 
 import org.jgrapht.graph.DefaultWeightedEdge;
@@ -24,7 +26,7 @@ public class ClusterPair {
 		this.graph = g; 
 		cut = new HashSet<DefaultWeightedEdge>();
 		calculateSimilarity();
-		System.out.println("similaridade calculada "+similarity);
+		System.out.println("similaridade calculada entre "+c1.getId()+" e "+c2.getId()+" "+similarity);
 	}
 	
 	public ClusterPair() {
@@ -91,7 +93,7 @@ public class ClusterPair {
 		this.cut = cut;
 	}
 	
-	public Cluster<TimeIntervalVertex, DefaultWeightedEdge> merge(PriorityQueue<ClusterPair> pairs){
+	public PriorityQueue<ClusterPair>  merge(PriorityQueue<ClusterPair> pairs, ArrayList<Cluster<TimeIntervalVertex, DefaultWeightedEdge>> clustering){
 		
 		HashSet<TimeIntervalVertex> vertices = new HashSet<TimeIntervalVertex>();
 		vertices.addAll(c1.vertexSet());
@@ -99,22 +101,21 @@ public class ClusterPair {
 		int id = Math.min(c1.getId(), c2.getId());
 		
 		Cluster<TimeIntervalVertex, DefaultWeightedEdge> newCluster = new Cluster<TimeIntervalVertex, DefaultWeightedEdge>(graph, vertices, id);
-		
-		
+		//System.out.println("qtd vert "+vertices.size() );
 		// calculate new similarities, between the new clusters and the others old clusters		
 		HashMap<Integer, ClusterPair> aux = new HashMap<Integer, ClusterPair>();
-		
+		PriorityQueue<ClusterPair>  newPairs = new PriorityQueue<ClusterPair>(1, new ClusterPairComparator());
 		ClusterPair newPair;
 		for (ClusterPair p : pairs) {
 			if(c1 == p.c1 || c2 == p.c1 ){
-				pairs.remove(p);
 				if(!aux.containsKey(p.c2.getId())){
 					newPair = new ClusterPair();
 					newPair.setC1(newCluster);
 					newPair.setC2(p.c2);
 					newPair.setCut(p.cut);
 					newPair.setSimilarity(p.similarity);
-					aux.put(p.c2.getId(), p);
+					newPair.setGraph(graph);
+					aux.put(p.c2.getId(), newPair);
 				}else{
 					newPair = aux.get(p.c2.getId());
 					newPair.cut.addAll(p.cut);
@@ -128,16 +129,30 @@ public class ClusterPair {
 					newPair.setC2(p.c1);
 					newPair.setCut(p.cut);
 					newPair.setSimilarity(p.similarity);
-					aux.put(p.c1.getId(), p);
+					newPair.setGraph(graph);
+					aux.put(p.c1.getId(), newPair);
 				}else{
 					newPair = aux.get(p.c1.getId());
 					newPair.cut.addAll(p.cut);
 					newPair.similarity += p.similarity;
 				}				
-			}			
+			}else{		
+				newPairs.add(p);
+			}
 		}
+		
+		for (Entry<Integer, ClusterPair> e : aux.entrySet()) {
+			newPairs.add(e.getValue());
+		}
+		
+		/*System.out.println("novo pairs");
+		for (ClusterPair clusterPair : newPairs) {
+			System.out.println(" "+clusterPair.getC1().getId() +" "+clusterPair.getC2().getId());
+		}*/
+		
 
-		return newCluster;
+		clustering.add(newCluster);
+		return newPairs;
 	}
 	
 }
