@@ -1,0 +1,70 @@
+package tvg.clustering.measure2;
+
+import java.util.AbstractCollection;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.PriorityQueue;
+
+import org.jgrapht.graph.DefaultWeightedEdge;
+
+
+import tvg.DirectedTVG;
+import tvg.TimeIntervalVertex;
+import tvg.clustering.Cluster;
+import tvg.clustering.ClusterPair;
+import tvg.clustering.ClusterPairComparator;
+import tvg.clustering.ClusteringTVG;
+public class DependencyClusteringAlgorithm implements ClusteringTVG<DefaultWeightedEdge>{
+
+	
+	
+	
+	@Override
+	public AbstractCollection<Cluster<TimeIntervalVertex, DefaultWeightedEdge>> execute(DirectedTVG<DefaultWeightedEdge> g) throws Exception {
+
+		//graph = g; 
+		int size = g.vertexSet().size();
+				
+		ArrayList<Cluster<TimeIntervalVertex, DefaultWeightedEdge>> clustering = new ArrayList<Cluster<TimeIntervalVertex,DefaultWeightedEdge>>();
+		PriorityQueue<ClusterPair> pairs = new PriorityQueue<ClusterPair>((int) Math.ceil((double)size/2.),new ClusterPairComparator());
+						
+		for (TimeIntervalVertex v : g.vertexSet()) {
+			HashSet<TimeIntervalVertex> set = new HashSet<TimeIntervalVertex>();
+			set.add(v);
+			clustering.add(new Cluster<TimeIntervalVertex, DefaultWeightedEdge>(g, set, v.getId()));
+		}
+	
+		ClusterPairImpl2 pair;
+		for (int i = 0; i<clustering.size(); i++) {
+			for (int j = i+1; j<clustering.size(); j++) {
+				pair = new ClusterPairImpl2(clustering.get(i), clustering.get(j), g);
+				pairs.add(pair);
+			}
+		}
+		
+		size = pairs.size();
+		while(size>0){
+			ClusterPair moreSimilar = pairs.remove();
+			pairs = moreSimilar.merge(pairs, clustering);
+			size = pairs.size();
+			
+			for (Cluster<TimeIntervalVertex, DefaultWeightedEdge> cl : clustering) {
+				System.out.println("Cluster "+cl.getId());
+				System.out.print("Vertices:");
+				for (TimeIntervalVertex v : cl.vertexSet()) {
+					System.out.print(v.getId()+" ");
+				}
+				System.out.println();
+			}
+		}
+		
+		
+		return clustering;
+	}
+
+	
+	
+	
+	
+		
+}

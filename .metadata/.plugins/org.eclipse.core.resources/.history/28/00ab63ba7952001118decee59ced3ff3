@@ -1,0 +1,14 @@
+package tvg;
+
+import org.jgrapht.EdgeFactory;
+import org.jgrapht.graph.DefaultWeightedEdge;
+import org.jgrapht.graph.SimpleDirectedWeightedGraph;
+
+public class DirectedTVG extends SimpleDirectedWeightedGraph<TimeIntervalVertex, DefaultWeightedEdge> {
+
+		
+	public DirectedTVG(EdgeFactory<TimeIntervalVertex, DefaultWeightedEdge> ef) {
+		super(ef);
+	}
+	
+}

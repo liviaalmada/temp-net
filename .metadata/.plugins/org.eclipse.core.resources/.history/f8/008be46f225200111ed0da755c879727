@@ -1,0 +1,34 @@
+package tvg.clustering;
+
+import java.util.HashSet;
+import org.jgrapht.Graph;
+import org.jgrapht.graph.Subgraph;
+
+public class Cluster<V, E> extends Subgraph<V, E, Graph<V,E>>{
+
+	private int id;
+	
+	public Cluster(Graph<V, E> base, HashSet<V> vertexSubset, int id) {
+		super(base, vertexSubset);
+		this.id = id;
+	}
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+	
+	public double quality(double alpha){
+		double sum1 = 0;
+		
+		for (V v : vertexSet()) {
+			
+		}
+		
+		return 0;
+	}
+
+}

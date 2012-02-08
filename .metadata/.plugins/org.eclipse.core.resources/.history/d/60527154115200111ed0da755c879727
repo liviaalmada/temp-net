@@ -1,0 +1,158 @@
+package tvg.clustering.measure2;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.PriorityQueue;
+
+import org.jgrapht.graph.DefaultWeightedEdge;
+
+import tvg.DirectedTVG;
+import tvg.TimeIntervalVertex;
+import tvg.clustering.Cluster;
+import tvg.clustering.ClusterPair;
+import tvg.clustering.ClusterPairComparator;
+
+public class ClusterPairImpl2 implements ClusterPair{
+	
+	private DirectedTVG<DefaultWeightedEdge> graph;
+	private Cluster<TimeIntervalVertex, DefaultWeightedEdge> c1;
+	private Cluster<TimeIntervalVertex, DefaultWeightedEdge> c2;
+	private double similarity;
+	private double dependencySum;
+	private HashSet<DefaultWeightedEdge> cut;
+	
+	public ClusterPairImpl2(Cluster<TimeIntervalVertex, DefaultWeightedEdge> c1, Cluster<TimeIntervalVertex, DefaultWeightedEdge> c2, DirectedTVG<DefaultWeightedEdge> g) {
+		// TODO Auto-generated constructor stub
+		this.c1 = c1;
+		this.c2 = c2;
+		this.graph = g; 
+		cut = new HashSet<DefaultWeightedEdge>();
+		
+		System.out.println("Entre "+c1.getId()+" e "+c2.getId());
+		calculateSimilarity();
+		System.out.println("similaridade calculada "+similarity);
+	}
+	
+	public ClusterPairImpl2() {
+		// TODO Auto-generated constructor stub
+	}
+	
+	public double getSimilarity(){
+		return similarity;
+	}
+
+	public double getDepencySum(){
+		return dependencySum;
+	}
+	
+	private double calculateSimilarity(){
+		double dep;
+		for (TimeIntervalVertex v : c1.vertexSet()) {
+			for (TimeIntervalVertex u : c2.vertexSet()) {
+				dep = dependencyDegree(u, v);
+				dependencySum += dep;
+				System.out.println("Grau de dependencia entre "+u.getId()+" e "+v.getId()+" "+);
+			}
+		}
+		
+		similarity = dependencySum/Math.max(c1.vertexSet().size(), c2.vertexSet().size());
+		
+		return similarity;
+	}
+	
+	private double dependencyDegree(TimeIntervalVertex u, TimeIntervalVertex v){				
+		return Math.max(directionalDependencey(u, v)/(u.lifeTime()*graph.outDegreeOf(u)), 
+						directionalDependencey(v, u)/(v.lifeTime()*graph.outDegreeOf(v)));		
+	}
+
+	private double directionalDependencey(TimeIntervalVertex u, TimeIntervalVertex v){
+		DefaultWeightedEdge e;
+		TimeIntervalVertex aux;
+		double depDegree = 0;			
+		double time ;	
+		
+		if(graph.containsEdge(u, v)){
+			e = graph.getEdge(u, v);
+			time = graph.getEdgeWeight(e);
+			cut.add(e);
+			aux = new TimeIntervalVertex(u.getInitialTime() + time, u.getFinalTime() + time);
+			System.out.println(aux.intersectionSize(v));
+			depDegree = aux.intersectionSize(v);		
+		}	
+		
+		return depDegree;
+	}
+	
+	public Cluster<TimeIntervalVertex, DefaultWeightedEdge> getC1() {
+		return c1;
+	}
+
+	public Cluster<TimeIntervalVertex, DefaultWeightedEdge> getC2() {
+		return c2;
+	}
+	
+	public void setGraph(DirectedTVG<DefaultWeightedEdge> graph) {
+		this.graph = graph;
+	}
+
+	public void setC1(Cluster<TimeIntervalVertex, DefaultWeightedEdge> c1) {
+		this.c1 = c1;
+	}
+
+	public void setC2(Cluster<TimeIntervalVertex, DefaultWeightedEdge> c2) {
+		this.c2 = c2;
+	}
+
+	public void setSimilarity(double similarity) {
+		this.similarity = similarity;
+	}
+
+	public void setCut(HashSet<DefaultWeightedEdge> cut) {
+		this.cut = cut;
+	}
+	
+	public PriorityQueue<ClusterPair>  merge(PriorityQueue<ClusterPair> pairs, ArrayList<Cluster<TimeIntervalVertex, DefaultWeightedEdge>> clustering){
+		
+		HashSet<TimeIntervalVertex> vertices = new HashSet<TimeIntervalVertex>();
+		vertices.addAll(c1.vertexSet());
+		vertices.addAll(c2.vertexSet());
+		int id = Math.min(c1.getId(), c2.getId());
+		
+		Cluster<TimeIntervalVertex, DefaultWeightedEdge> newCluster = new Cluster<TimeIntervalVertex, DefaultWeightedEdge>(graph, vertices, id);
+		
+		// calculate new similarities, between the new clusters and the others old clusters		
+		HashMap<Integer, ClusterPair> aux = new HashMap<Integer, ClusterPair>();
+		PriorityQueue<ClusterPair>  newPairs = new PriorityQueue<ClusterPair>(1, new ClusterPairComparator());
+		ClusterPair newPair;
+		for (ClusterPair p : pairs) {
+			if(c1 == p.getC1() || c2 == p.getC1() ){
+				if(!aux.containsKey(p.getC2().getId())){
+					newPair = new ClusterPairImpl2(newCluster, p.getC2(), graph);
+					aux.put(p.getC2().getId(), newPair);
+				}
+				
+			}else if(c1 == p.getC2() || c2 == p.getC2()){
+				if(!aux.containsKey(p.getC1().getId())){
+					newPair = new ClusterPairImpl2(newCluster, p.getC1(), graph);	
+					aux.put(p.getC1().getId(), newPair);
+				}			
+			}else{		
+				newPairs.add(p);
+			}
+		}
+		
+
+		clustering.add(newCluster);
+		return newPairs;
+	}
+
+	public HashSet<DefaultWeightedEdge> getCut() {
+		return cut;
+	}
+
+	public void setDependencySum(double dependencySum) {
+		this.dependencySum = dependencySum;
+	}
+	
+}

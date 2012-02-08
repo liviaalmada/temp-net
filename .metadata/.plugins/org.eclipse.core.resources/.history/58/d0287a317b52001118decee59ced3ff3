@@ -1,0 +1,24 @@
+package tvg.clustering;
+
+import java.util.HashSet;
+
+import org.jgrapht.Graph;
+import org.jgrapht.graph.DefaultWeightedEdge;
+
+import tvg.TimeIntervalVertex;
+
+public class DirectedTVGCluster extends Cluster<TimeIntervalVertex, DefaultWeightedEdge>{
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	public DirectedTVGCluster(Graph<TimeIntervalVertex, DefaultWeightedEdge> base,
+			HashSet<TimeIntervalVertex> vertexSubset, int id) {
+		super(base, vertexSubset, id);
+		// TODO Auto-generated constructor stub
+	}
+
+	
+}

@@ -1,0 +1,12 @@
+package tvg.clustering;
+
+import tvg.TimeIntervalVertex;
+
+public class TVGCluster<E> extends Cluster<TimeIntervalVertex, E>{
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+}

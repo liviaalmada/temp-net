@@ -1,0 +1,35 @@
+package tvg.clustering;
+
+import java.util.HashSet;
+
+import org.jgrapht.Graph;
+import org.jgrapht.graph.DefaultWeightedEdge;
+
+import tvg.TimeIntervalVertex;
+
+public class DirectedTVGCluster extends Cluster<TimeIntervalVertex, DefaultWeightedEdge>{
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	
+	private double minTime = Double.MAX_VALUE;
+	private double maxTime = 0;
+	private TimeIntervalVertex life;
+
+	public DirectedTVGCluster(Graph<TimeIntervalVertex, DefaultWeightedEdge> base,
+			HashSet<TimeIntervalVertex> vertexSubset, int id) {
+		super(base, vertexSubset, id);
+		// TODO Auto-generated constructor stub
+		for (TimeIntervalVertex v : vertexSubset) {
+			if(v.getInitialTime() < minTime) minTime = v.getInitialTime();
+			if(v.getFinalTime() < maxTime) maxTime = v.getFinalTime();
+		}
+		life = new TimeIntervalVertex(minTime, maxTime);
+	}
+
+	public double life(){
+		return life.lifeTime();
+	}
+}

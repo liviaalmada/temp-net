@@ -1,0 +1,43 @@
+package tvg.clustering;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map.Entry;
+import java.util.PriorityQueue;
+
+import org.jgrapht.graph.DefaultWeightedEdge;
+
+import tvg.DirectedTVG;
+import tvg.TimeIntervalVertex;
+import tvg.clustering.Cluster;
+
+public interface ClusterPair 
+	
+	public ClusterPair(Cluster<TimeIntervalVertex, DefaultWeightedEdge> c1, Cluster<TimeIntervalVertex, DefaultWeightedEdge> c2, DirectedTVG<DefaultWeightedEdge> g);
+	
+	
+	public double getSimilarity();
+	
+	public double calculateSimilarity();
+	
+	public void incrementSimilarity(TimeIntervalVertex u, TimeIntervalVertex v);
+
+	public Cluster<TimeIntervalVertex, DefaultWeightedEdge> getC1();
+	
+	public Cluster<TimeIntervalVertex, DefaultWeightedEdge> getC2();
+	
+	public void setGraph(DirectedTVG<DefaultWeightedEdge> graph);
+
+	public void setC1(Cluster<TimeIntervalVertex, DefaultWeightedEdge> c1);
+
+	public void setC2(Cluster<TimeIntervalVertex, DefaultWeightedEdge> c2);
+
+	public void setSimilarity(double similarity) ;
+
+	public void setCut(HashSet<DefaultWeightedEdge> cut);
+	
+	public PriorityQueue<ClusterPair>  merge(PriorityQueue<ClusterPair> pairs, ArrayList<Cluster<TimeIntervalVertex, DefaultWeightedEdge>> clustering);
+		
+		
+}

@@ -1,0 +1,34 @@
+package tvg.clustering;
+
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.PriorityQueue;
+
+import org.jgrapht.graph.DefaultWeightedEdge;
+
+import tvg.DirectedTVG;
+
+public interface TVGClusterPair{ 
+	
+	public double getSimilarity();
+		
+	public DirectedTVGCluster getC1();
+	
+	public DirectedTVGCluster getC2();
+	
+	public HashSet<DefaultWeightedEdge> getCut();
+	
+	public void setGraph(DirectedTVG graph);
+
+	public void setC1(DirectedTVGCluster c1);
+
+	public void setC2(DirectedTVGCluster c2);
+
+	public void setSimilarity(double similarity) ;
+
+	public void setCut(HashSet<DefaultWeightedEdge> cut);
+	
+	public PriorityQueue<TVGClusterPair>  merge(PriorityQueue<TVGClusterPair> pairs, ArrayList<DirectedTVGCluster> clustering);
+		
+		
+}

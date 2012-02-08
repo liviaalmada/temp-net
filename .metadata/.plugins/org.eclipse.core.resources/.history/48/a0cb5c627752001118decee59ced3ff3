@@ -1,0 +1,7 @@
+package tvg.clustering;
+
+import tvg.TimeIntervalVertex;
+
+public class TVGCluster<E> extends Cluster<TimeIntervalVertex, E>{
+
+}

@@ -1,0 +1,12 @@
+package tvg.clustering;
+
+import java.util.AbstractCollection;
+
+import org.jgrapht.graph.DefaultWeightedEdge;
+
+import tvg.DirectedTVG;
+import tvg.TimeIntervalVertex;
+
+public interface ClusteringTVG{
+	AbstractCollection<DirectedTVGCluster> execute(DirectedTVG g) throws Exception;
+}

@@ -1,0 +1,28 @@
+package tvg.clustering;
+
+import java.util.HashSet;
+
+import org.jgrapht.DirectedGraph;
+import org.jgrapht.Graph;
+import org.jgrapht.graph.Subgraph;
+
+import tvg.TimeIntervalVertex;
+
+public class Cluster extends Subgraph<TimeIntervalVertex, E, Graph<TimeIntervalVertex,E>>{
+
+	private int id;
+	
+	public Cluster(Graph<V, E> base, HashSet<V> vertexSubset, int id) {
+		super(base, vertexSubset);
+		this.id = id;
+	}
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+	
+}

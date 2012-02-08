@@ -1,0 +1,104 @@
+package tvg.clustering.measure2;
+
+import java.util.AbstractCollection;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.PriorityQueue;
+
+import org.jgrapht.graph.DefaultWeightedEdge;
+
+
+import tvg.DirectedTVG;
+import tvg.TimeIntervalVertex;
+import tvg.clustering.Cluster;
+import tvg.clustering.DirectedTVGCluster;
+import tvg.clustering.TVGClusterPair;
+import tvg.clustering.ClusterPairComparator;
+import tvg.clustering.ClusteringTVG;
+public class DependencyClusteringAlgorithm implements ClusteringTVG{
+
+//	ArrayList<ArrayList<Cluster<TimeIntervalVertex, DefaultWeightedEdge>>> clusterinSteps;
+	ArrayList<DirectedTVGCluster> clustering;
+	DirectedTVG g;
+	public DependencyClusteringAlgorithm() {
+		// TODO Auto-generated constructor stub
+		clustering = new ArrayList<DirectedTVGCluster>();
+	}
+	
+	@Override
+	public AbstractCollection<DirectedTVGCluster> execute(DirectedTVG g) throws Exception {
+
+		this.g = g; 
+		int size = g.vertexSet().size();
+				
+		
+		PriorityQueue<TVGClusterPair> pairs = new PriorityQueue<TVGClusterPair>((int) Math.ceil((double)size/2.),new ClusterPairComparator());
+						
+		for (TimeIntervalVertex v : g.vertexSet()) {
+			HashSet<TimeIntervalVertex> set = new HashSet<TimeIntervalVertex>();
+			set.add(v);
+			clustering.add(new DirectedTVGCluster(g, set, v.getId()));
+		}
+	
+		ClusterPairImpl2 pair;
+		for (int i = 0; i<clustering.size(); i++) {
+			for (int j = i+1; j<clustering.size(); j++) {
+				pair = new ClusterPairImpl2(clustering.get(i), clustering.get(j), g);
+				pairs.add(pair);
+			}
+		}
+		
+		size = pairs.size();
+		while(size>0){
+
+			for (Cluster<TimeIntervalVertex, DefaultWeightedEdge> cl : clustering) {
+				System.out.println("Cluster "+cl.getId());
+				System.out.print("Vertices:");
+				for (TimeIntervalVertex v : cl.vertexSet()) {
+					System.out.print(v.getId()+" ");
+				}
+				System.out.println();
+			}
+			
+			TVGClusterPair moreSimilar = pairs.remove();
+			pairs = moreSimilar.merge(pairs, clustering);
+			size = pairs.size();
+			
+		}
+		
+		
+		return clustering;
+	}
+
+	public double quality(double alpha){
+		double out = 0;
+		double tot = 0;
+		double sum1 = 0;
+	
+		for (Cluster<TimeIntervalVertex, DefaultWeightedEdge> cl1 : clustering) {
+			out = 0;
+			for (Cluster<TimeIntervalVertex, DefaultWeightedEdge> cl2 : clustering) {
+				for (TimeIntervalVertex v1 : cl1.vertexSet()) {
+					for (TimeIntervalVertex v2 : cl2.vertexSet()) {
+						if(g.containsEdge(g.getEdge(v1, v2))){
+							out++;
+						}
+					}
+				}
+			}
+			tot = out + cl1.edgeSet().size();
+			sum1 += (1 - out/tot);
+		}
+		
+		for (int i = 0; i < clustering.size(); i++) {
+			for (int j = i+1; j < clustering.size(); j++) {
+			
+			}			
+		}
+		return 0;
+	}
+	
+	
+	
+		
+}
