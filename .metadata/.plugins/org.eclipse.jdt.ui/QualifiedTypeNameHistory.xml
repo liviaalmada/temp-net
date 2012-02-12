@@ -6,9 +6,19 @@
 <fullyQualifiedTypeName name="java.io.FileReader"/>
 <fullyQualifiedTypeName name="java.io.BufferedReader"/>
 <fullyQualifiedTypeName name="java.util.HashMap"/>
-<fullyQualifiedTypeName name="tvg.clustering.ClusterPair"/>
 <fullyQualifiedTypeName name="java.util.PriorityQueue"/>
+<fullyQualifiedTypeName name="tvg.clustering.ClusteringTVG"/>
+<fullyQualifiedTypeName name="tvg.clustering.measure1.ClusterPairComparator"/>
+<fullyQualifiedTypeName name="tvg.clustering.measure1.ClusterPair"/>
+<fullyQualifiedTypeName name="tvg.clustering.measure2.ClusterPairImpl2"/>
 <fullyQualifiedTypeName name="tvg.clustering.ClusterPairComparator"/>
+<fullyQualifiedTypeName name="tvg.clustering.ClusterPair"/>
+<fullyQualifiedTypeName name="tvg.clustering.measure2.DependencyClusteringAlgorithm"/>
+<fullyQualifiedTypeName name="org.jgrapht.DirectedGraph"/>
+<fullyQualifiedTypeName name="java.util.ArrayList"/>
+<fullyQualifiedTypeName name="tvg.clustering.Cluster"/>
+<fullyQualifiedTypeName name="tvg.DirectedTVG"/>
 <fullyQualifiedTypeName name="tvg.TimeIntervalVertex"/>
 <fullyQualifiedTypeName name="org.jgrapht.graph.DefaultWeightedEdge"/>
+<fullyQualifiedTypeName name="java.lang.Math"/>
 </qualifiedTypeNameHistroy>

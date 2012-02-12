@@ -5,3 +5,13 @@
 1328720888377	Rename type 'TVGCluster'
 1328721145905	Rename type 'ClusterPair'
 1328723594225	Rename method 'quality'
+1328735694872	Copy package
+1328735712134	Rename package 'tvg.clustering.measure2.copy'
+1328735778254	Rename type 'ClusterPairImpl2'
+1328735803258	Rename type 'DependencyClusteringAlgorithm'
+1328735824823	Rename type 'DependencyTest'
+1328736142534	Rename method 'dependencyDegree'
+1328738480403	Rename local variable 'sim1'
+1328738487169	Rename local variable 'dep2'
+1328759624637	Rename method 'directionalDependencey'
+1328809097543	Copy file

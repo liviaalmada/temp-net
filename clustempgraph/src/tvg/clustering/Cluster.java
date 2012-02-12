@@ -1,6 +1,8 @@
 package tvg.clustering;
 
 import java.util.HashSet;
+
+import org.jgrapht.DirectedGraph;
 import org.jgrapht.Graph;
 import org.jgrapht.graph.Subgraph;
 
@@ -20,5 +22,5 @@ public class Cluster<V, E> extends Subgraph<V, E, Graph<V,E>>{
 	public void setId(int id) {
 		this.id = id;
 	}
-
+	
 }

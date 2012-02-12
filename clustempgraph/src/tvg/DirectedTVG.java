@@ -1,13 +1,23 @@
 package tvg;
 
 import org.jgrapht.EdgeFactory;
+import org.jgrapht.graph.DefaultWeightedEdge;
 import org.jgrapht.graph.SimpleDirectedWeightedGraph;
 
-public class DirectedTVG<E> extends SimpleDirectedWeightedGraph<TimeIntervalVertex, E> {
+public class DirectedTVG extends SimpleDirectedWeightedGraph<TimeIntervalVertex, DefaultWeightedEdge> {
 
 		
-	public DirectedTVG(EdgeFactory<TimeIntervalVertex, E> ef) {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	public DirectedTVG(EdgeFactory<TimeIntervalVertex, DefaultWeightedEdge> ef) {
 		super(ef);
 	}
 	
+	public void setEdgeWeight(DefaultWeightedEdge e, double w){
+		this.getEdgeSource(e).addOutWeight(w);
+		super.setEdgeWeight(e, w);
+	}
 }

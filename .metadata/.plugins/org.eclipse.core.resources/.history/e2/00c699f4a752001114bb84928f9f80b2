@@ -1,0 +1,120 @@
+package tvg.clustering.measure3;
+
+import java.util.AbstractCollection;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.PriorityQueue;
+
+import org.jgrapht.graph.DefaultWeightedEdge;
+
+
+import tvg.DirectedTVG;
+import tvg.TimeIntervalVertex;
+import tvg.clustering.Cluster;
+import tvg.clustering.DirectedTVGCluster;
+import tvg.clustering.TVGClusterPair;
+import tvg.clustering.ClusterPairComparator;
+import tvg.clustering.ClusteringTVG;
+public class WeightClusteringAlgorithm implements ClusteringTVG{
+
+	ArrayList<DirectedTVGCluster> clustering;
+	DirectedTVG g;
+	double quality;
+	
+	public WeightClusteringAlgorithm() {
+		clustering = new ArrayList<DirectedTVGCluster>();
+	}
+	
+	@Override
+	public AbstractCollection<DirectedTVGCluster> execute(DirectedTVG g) throws Exception {
+
+		this.g = g; 
+		int size = g.vertexSet().size();
+		quality = 0;
+				
+		
+		PriorityQueue<TVGClusterPair> pairs = new PriorityQueue<TVGClusterPair>((int) Math.ceil((double)size/2.),new ClusterPairComparator());
+						
+		for (TimeIntervalVertex v : g.vertexSet()) {
+			HashSet<TimeIntervalVertex> set = new HashSet<TimeIntervalVertex>();
+			set.add(v);
+			clustering.add(new DirectedTVGCluster(g, set, v.getId()));
+		}
+	
+		ClusterPairImpl3 pair;
+		for (int i = 0; i<clustering.size(); i++) {
+			for (int j = i+1; j<clustering.size(); j++) {
+				pair = new ClusterPairImpl3(clustering.get(i), clustering.get(j), g);
+				pairs.add(pair);
+			}
+		}
+		
+		size = pairs.size();
+		while(size>0){
+
+			System.out.println("Qualidade "+quality);
+			
+			for (Cluster<TimeIntervalVertex, DefaultWeightedEdge> cl : clustering) {
+				System.out.println("Cluster "+cl.getId());
+				System.out.print("Vertices:");
+				for (TimeIntervalVertex v : cl.vertexSet()) {
+					System.out.print(v.getId()+" ");
+				}
+				System.out.println();
+			}
+			
+			
+			TVGClusterPair moreSimilar = pairs.remove();
+			pairs = moreSimilar.merge(pairs, clustering);
+			System.out.println("similaridade "+moreSimilar.getSimilarity());
+			size = pairs.size();
+			calculateQuality(0.5);
+			
+		}
+		
+		
+		return clustering;
+	}
+
+	public void calculateQuality(double alpha){
+		double out = 0;
+		double in = 0;
+		double tot = 0;
+		double sum1 = 0;
+		double sum2 = 0;
+		double ratio = 0;
+	
+		for (Cluster<TimeIntervalVertex, DefaultWeightedEdge> cl1 : clustering) {
+			out = 0;
+			in = 0;
+			for (Cluster<TimeIntervalVertex, DefaultWeightedEdge> cl2 : clustering) {
+				for (TimeIntervalVertex v1 : cl1.vertexSet()) {
+					for (TimeIntervalVertex v2 : cl2.vertexSet()) {
+						if(g.containsEdge(g.getEdge(v1, v2))){
+							out++;
+						}
+						if(g.containsEdge(g.getEdge(v2, v1))){
+							in++;
+						}
+					}
+				}
+			}
+			tot = in + out + cl1.edgeSet().size();
+			sum1 += (1 - out/tot);
+		}
+		
+		for (int i = 0; i < clustering.size(); i++) {
+			for (int j = i+1; j < clustering.size(); j++) {
+				ratio = clustering.get(i).intersection(clustering.get(j))/clustering.get(i).union(clustering.get(j));
+				sum2 += 1 - ratio;
+			}			
+		}
+		
+		quality =  alpha * sum1/clustering.size() + 
+				(1 - alpha)*sum2/(clustering.size()*(clustering.size()-1));
+	}
+	
+	
+	
+		
+}

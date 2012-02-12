@@ -1,2 +1,20 @@
 1328120884981	Infer generic type arguments
 1328125697606	Copy file
+1328216669237	Delete element
+1328216693513	Copy compilation units
+1328216751437	Copy compilation units
+1328216830204	Delete element
+1328216833412	Delete element
+1328216956587	Move compilation unit
+1328217216142	Move compilation unit
+1328217262345	Delete element
+1328217266088	Delete element
+1328217280494	Move compilation unit
+1328217287226	Move compilation unit
+1328217386249	Copy compilation unit
+1328217646438	Rename type 'ClusterPair'
+1328218875655	Rename method 'incrementSimilarity'
+1328220288743	Rename method 'size'
+1328220345617	Rename method 'size'
+1328220654415	Move compilation unit
+1328220741032	Rename type 'ClusterPair'

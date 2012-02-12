@@ -63,7 +63,6 @@ public class DependencyTest {
 			     g.addEdge(v, u);
 			     e = g.getEdge(v, u);
 			     g.setEdgeWeight(e, w);
-			    //System.out.println(v.getId()+" "+u.getId());
 			} 
 			
 			DependencyClusteringAlgorithm cl = new DependencyClusteringAlgorithm();
@@ -81,35 +80,5 @@ public class DependencyTest {
 		}  
 		
 		
-		
-		
-		
-		
-//		g.addVertex(u);
-//		g.addVertex(v);
-//		g.addEdge(u, v);
-//		DefaultWeightedEdge e = g.getEdge(u, v);
-//		g.setEdgeWeight(e, 3);
-//		System.out.println(g.getEdgeWeight(e));
-//		
-//		FirstClusteringAlgorithm cl = new FirstClusteringAlgorithm();
-//		
-//		HashSet<TimeIntervalVertex> a1 = new HashSet<TimeIntervalVertex>();
-//		a1.add(u);
-//		Cluster<TimeIntervalVertex, DefaultWeightedEdge> c1 = new Cluster<TimeIntervalVertex, DefaultWeightedEdge>(g,a1,u.getId());
-//		
-//		HashSet<TimeIntervalVertex> a2 = new HashSet<TimeIntervalVertex>();
-//		a2.add(v);
-//		Cluster<TimeIntervalVertex, DefaultWeightedEdge> c2 = new Cluster<TimeIntervalVertex, DefaultWeightedEdge>(g,a2,v.getId());
-//		
-//		g.addEdge(u, v);
-//		try {
-//			cl.execute(g);
-//		} catch (Exception e1) {
-//			// TODO Auto-generated catch block
-//			e1.printStackTrace();
-//		}
-		//System.out.println(cl.similarity(c1, c2));
 	}
-
 }

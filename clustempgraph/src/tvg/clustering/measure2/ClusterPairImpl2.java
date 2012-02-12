@@ -48,30 +48,32 @@ public class ClusterPairImpl2 implements TVGClusterPair{
 	}
 	
 	private double calculateSimilarity(){
-		double dep;
+		double dep1=0;
+		double dep2=0;
 		for (TimeIntervalVertex v : c1.vertexSet()) {
 			for (TimeIntervalVertex u : c2.vertexSet()) {
-				dep = dependencyDegree(u, v);
-				dependencySum += dep;
+				dep1 += directionalDependence(u, v);
+				dep2 += directionalDependence(v, u);
+				//dependencySum += dep;
 				//System.out.println("Grau de dependencia entre "+u.getId()+" e "+v.getId()+": "+dep);
 			}
 		}
 		
-		similarity = dependencySum/Math.max(c1.vertexSet().size(), c2.vertexSet().size());
+		similarity = Math.max(dep1/c1.vertexSet().size(), dep2/c2.vertexSet().size());
 		
 		return similarity;
 	}
 	
-	private double dependencyDegree(TimeIntervalVertex u, TimeIntervalVertex v){
-		
-		//System.out.println(graph.outDegreeOf(u));
-		//System.out.println(graph.inDegreeOf(u));
-		//double quoV = (v.lifeTime()*graph.outDegreeOf(v));
-		return Math.max(directionalDependencey(u, v), 
-						directionalDependencey(v, u));		
-	}
+//	private double dependencyDegree(TimeIntervalVertex u, TimeIntervalVertex v){
+//		
+//		//System.out.println(graph.outDegreeOf(u));
+//		//System.out.println(graph.inDegreeOf(u));
+//		//double quoV = (v.lifeTime()*graph.outDegreeOf(v));
+//		return Math.max(directionalDependencey(u, v), 
+//						directionalDependencey(v, u));		
+//	}
 
-	private double directionalDependencey(TimeIntervalVertex u, TimeIntervalVertex v){
+	private double directionalDependence(TimeIntervalVertex u, TimeIntervalVertex v){
 		double quocU = (u.lifeTime()*graph.outDegreeOf(u));
 		DefaultWeightedEdge e;
 		TimeIntervalVertex aux;

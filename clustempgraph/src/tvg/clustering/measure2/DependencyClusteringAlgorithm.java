@@ -72,6 +72,17 @@ public class DependencyClusteringAlgorithm implements ClusteringTVG{
 			
 		}
 		
+		System.out.println("Qualidade "+quality);
+		
+		for (Cluster<TimeIntervalVertex, DefaultWeightedEdge> cl : clustering) {
+			System.out.println("Cluster "+cl.getId());
+			System.out.print("Vertices:");
+			for (TimeIntervalVertex v : cl.vertexSet()) {
+				System.out.print(v.getId()+" ");
+			}
+			System.out.println();
+		}
+		
 		
 		return clustering;
 	}
